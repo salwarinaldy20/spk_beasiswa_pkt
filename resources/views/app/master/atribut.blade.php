@@ -19,7 +19,7 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-white opacity-75 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-white opacity-75">Gejala</li>
+        <li class="breadcrumb-item text-white opacity-75">Atribut</li>
     </ul>
 </div>
 @endsection
@@ -30,8 +30,8 @@
     <div class="card-header border-0 pt-6">
         <!--begin::Card title-->
         <div class="card-title flex-column">
-            <h2 class="mb-1">List Gejala</h2>
-            <div class="fs-6 fw-bold text-muted">Manage Symptoms</div>
+            <h2 class="mb-1">List Atribut</h2>
+            <div class="fs-6 fw-bold text-muted">Manage Aribut</div>
         </div>
 
     </div>
@@ -40,13 +40,13 @@
     <div class="card-body py-4">
 
         <div>
-            @if (Omjin::permission('gejalaCreate'))
+            @if (Omjin::permission('atributCreate'))
             <button type="button" data-state="0" id="add" class="btn btn-md btn-outline btn-outline-warning btn-active-light-warning  me-2 hidex" onclick="toggleLayout($(this))">Add</button>
             @endif
-            @if (Omjin::permission('gejalaDelete'))
+            @if (Omjin::permission('atributDelete'))
             <button type="button" class="btn btn-md btn-outline btn-outline-warning btn-active-light-warning  me-2 hidex dsblsel" disabled onclick="deleteAll()">Delete <span class="nsel"></span></button>
             @endif
-            <button type="button" class="btn btn-md btn-outline btn-outline-warning  btn-active-light-warning  me-2 hidex refresh"  data-refreshx="tblgejala"><i class="fa fa-sync-alt text-warning"></i></button>
+            <button type="button" class="btn btn-md btn-outline btn-outline-warning  btn-active-light-warning  me-2 hidex refresh"  data-refreshx="tblatribut"><i class="fa fa-sync-alt text-warning"></i></button>
         </div>
         {{-- 7771235312V451 --}}
         <div class="separator separator-dashed my-4"></div>
@@ -65,19 +65,18 @@
 
                 <div class="table-responsive">
 
-                    <table class="table table-row-bordered display nowrap" id="tblgejala" style="width:100%">
+                    <table class="table table-row-bordered display nowrap" id="tblatribut" style="width:100%">
                         <thead>
                             <tr>
                                 <th style="align-items: center; width: 5px !important;">#</th>
                                 <th width="1px">No</th>
-                                <th width="150px">Gejala</th>
-                                <th width="150px">Pertanyaan</th>
+                                <th width="150px">Atribut</th>
                                 <th width="50px">Aksi</th>
                             </tr>
                         </thead>
                         <thead>
                             <tr>
-                                <td class="p-1" style="align-items: center; width: 5px !important;"><input type="checkbox" class="ckbsa" id="satblgejala"/></td>
+                                <td class="p-1" style="align-items: center; width: 5px !important;"><input type="checkbox" class="ckbsa" id="satblatribut"/></td>
                                 <td class="p-1"></td>
                                 <td class="p-1">
                                     <div class="input-group">
@@ -93,26 +92,10 @@
                                                 </div>
                                               </div>
                                         </div>
-                                        <input  id="flgejala" type="text" data-column="4" class="form-control py-0 fltable" placeholder="">
+                                        <input  id="flatribut" type="text" data-column="4" class="form-control py-0 fltable" placeholder="">
                                     </div>
                                 </td>
-                                <td class="p-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="btn-group">
-                                                <button class="btn btnf btn-secondary btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                  <span class="statefil">&#128270;</i></span>
-                                                </button>
-                                                <div class="dropdown-menu menuf">
-                                                    @foreach (Omjin::dtFilterCategory('string') as $item)
-                                                    <a class="dropdown-item itemfil" data-value="{{$item[0]}}" href="javascript:">{{$item[1]}}</a>
-                                                    @endforeach
-                                                </div>
-                                              </div>
-                                        </div>
-                                        <input  id="flpertanyaan" type="text" data-column="4" class="form-control py-0 fltable" placeholder="">
-                                    </div>
-                                </td>
+
                                 <td class="p-1"></td>
                             </tr>
                         </thead>
@@ -129,20 +112,13 @@
 
                 <form id="reg" novalidate="novalidate">
                     <div class="form-group row fv-row mb-5">
-                        <label for="example-text-input" class="col-md-2 col-form-label">Gejala</label>
+                        <label for="example-text-input" class="col-md-2 col-form-label">Atribut</label>
                         <div class="col-md-10">
-                            <input class="form-control form-control-solid" autocomplete="off" id="gejala" name="gejala" type="search"
-                                placeholder="Gejala" required>
+                            <input class="form-control form-control-solid" autocomplete="off" id="atribut" name="atribut" type="search"
+                                placeholder="Atribut" required>
                         </div>
                     </div>
 
-                    <div class="form-group row fv-row mb-5">
-                        <label for="example-text-input" class="col-md-2 col-form-label">Pertanyaan</label>
-                        <div class="col-md-10">
-                            <textarea cols="30" rows="3" class="form-control form-control-solid" autocomplete="off" id="pertanyaan" name="pertanyaan" placeholder="Pertanyaan" required>
-                            </textarea>
-                        </div>
-                    </div>
 
 
                     <div class="separator separator-dashed my-4"></div>
@@ -169,5 +145,5 @@
 @endsection
 
 @section('customjs')
-<script src="{{ asset('js/gejala.js') }}"></script>
+<script src="{{ asset('js/atribut.js') }}"></script>
 @endsection

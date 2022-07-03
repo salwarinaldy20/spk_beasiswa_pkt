@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\master;
+namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Master\Gejala;
+use App\Models\Master\Periode;
 
 
 use Session;
@@ -17,20 +17,20 @@ use Omjin;
 use Validator;
 use DataTables;
 
-class GejalaController extends Controller
+class PeriodeController extends Controller
 {
-    public function gejala(){
-        return view('app.master.gejala');
+    public function periode(){
+        return view('app.master.periode');
     }
 
     public function generateButtonAct($status, $idu){
 
         $aksi = '';
 
-        if(Omjin::permission('gejalaUpdate')){
+        if(Omjin::permission('periodeUpdate')){
             $aksi .= '<a class="btnx btn-primary btnx-xs text-white me-2" onclick="edit(\''.$idu.'\');"> <i class="fa fa-pencil-alt text-white"></i></a>';
         }
-        if(Omjin::permission('gejalaDelete')){
+        if(Omjin::permission('periodeDelete')){
             $aksi .= '<a class="btnx btn-danger btnx-xs text-white" onclick="hapus(\''.$idu.'\');"> <i class="fa fa-times text-white"></i></a>';
         }
 
@@ -39,10 +39,10 @@ class GejalaController extends Controller
     }
 
 
-    public function getDataGejala(Request $request){
+    public function getDataPeriode(Request $request){
 
-        // Penyakit disini itu nama Modelnya
-        $qry =Gejala::where('active', 1);
+        // Periode disini itu nama Modelnya
+        $qry = Periode::where('active', 1);
 
         $filters = $request->filters;
         $search = $request->search;
@@ -69,8 +69,7 @@ class GejalaController extends Controller
 			return [
 				'id'=>$res->id,
 				'DT_RowIndex'=>$res->DT_RowIndex,
-				'gejala'=>$res->gejala,
-				'pertanyaan'=>$res->pertanyaan,
+				'periode'=>$res->periode,
 				'aksi'=>$res->aksi];
 		});
 
@@ -80,15 +79,14 @@ class GejalaController extends Controller
     }
 
 
-
-    public function fdataGejala(Request $request){
+    public function fdataPeriode(Request $request){
         $idu = $request->id;
-        $data =Gejala::find($idu);
+        $data = Periode::find($idu);
 
         if($data){
             $datax = array(
-                'gejala' => $data->gejala,
-                'pertanyaan' => $data->pertanyaan,
+                'periode' => $data->periode,
+
             );
         } else {
             $datax = null;
@@ -97,25 +95,22 @@ class GejalaController extends Controller
     	return response()->json($datax);
     }
 
-    // Update dan Create
-    public function ucGejala(Request $request){
+    public function ucPeriode(Request $request){
 
     	$idu = $request->id;
 
-		$gejala = $request->gejala;
-		$pertanyaan = $request->pertanyaan;
-
+		$periode = $request->periode;
 
 		DB::beginTransaction();
         try {
 
             $query1 = [
-                'gejala' => $gejala,
-                'pertanyaan' => $pertanyaan,
+                'periode' => $periode,
+
+
             ];
 
-            $sql =Gejala::updateOrCreate( ['id' => $idu], $query1 );
-
+            $sql = Periode::updateOrCreate( ['id' => $idu], $query1 );
 
 
             DB::commit();
@@ -128,7 +123,7 @@ class GejalaController extends Controller
 
     }
 
-    public function delGejala(Request $request){
+    public function delPeriode(Request $request){
 
 
 		DB::beginTransaction();
@@ -138,12 +133,12 @@ class GejalaController extends Controller
             if(is_array($idx)){
 
                 $id = array_map(function($val) { return $val; }, $idx);
-                $sql =Gejala::whereIn('id', $id)->update(['active' => 0]);
+                $sql = Periode::whereIn('id', $id)->update(['active' => 0]);
 
             } else {
 
                 $idu = $request->id;
-                $sql =Gejala::find($idu);
+                $sql = Periode::find($idu);
 
                 $sql1 = $sql->update(['active' => 0]);
 
@@ -152,10 +147,13 @@ class GejalaController extends Controller
 
 
             DB::commit();
-            return $this->successResponse('Gejala succesfully deleted', null);
+            return $this->successResponse('Periode succesfully deleted', null);
         } catch (\Exception $e) {
             DB::rollback();
             return $this->errorResponse($e->getMessage(), $e->getMessage());
         }
     }
+
+
+
 }

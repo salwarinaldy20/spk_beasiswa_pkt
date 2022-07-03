@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Models\Master;
+namespace App\Models\View;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use BaseModels;
 
-
-class Penyakit extends BaseModels
+class VRulesPenilaian extends Model
 {
     use HasFactory;
 
-// Sesuaikan dengan nama database jadi penyakit itu ms_penyakit
-    protected $table = 'ms_penyakit';
+    protected $table = 'vw_rules_penilaian';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $keyType = 'string';
@@ -30,5 +27,4 @@ class Penyakit extends BaseModels
     {
         return 'string';
     }
-
 }

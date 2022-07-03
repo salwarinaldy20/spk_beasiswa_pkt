@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use BaseModels;
 
-class Rules extends BaseModels
+class Penilaian extends BaseModels
 {
     use HasFactory;
 
-    protected $table = 'ms_rules';
+    protected $table = 'ms_penilaian';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $keyType = 'string';

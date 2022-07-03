@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 use App\Models\User;
-use App\Models\User\Users; 
+use App\Models\User\Users;
 
 use Carbon\Carbon;
 
@@ -18,15 +18,15 @@ use DB;
 use DateTime;
 use DatePeriod;
 use DateInterval;
-use Validator; 
+use Validator;
 use Omjin;
 
 class HomeController extends Controller
 {
-    public function landing(){
-        return view('home.index');
-    }
-    
+    // public function landing(){
+    //     return view('home.index');
+    // }
+
     public function signin(){
 
         if (Auth::check()) {
@@ -36,9 +36,9 @@ class HomeController extends Controller
     	}
     }
 
-	public function signup(){
-		return view('home.signup');
-	}
+	// public function signup(){
+	// 	return view('home.signup');
+	// }
 
 
 }

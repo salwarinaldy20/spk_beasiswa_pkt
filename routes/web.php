@@ -8,9 +8,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\ACLController;
 use App\Http\Controllers\User\ProfileController;
-use App\Http\Controllers\Master\PenyakitController;
 use App\Http\Controllers\Master\RulesController;
-use App\Http\Controllers\Master\GejalaController;
+use App\Http\Controllers\Master\AtributController;
+use App\Http\Controllers\Master\KategoriController;
+use App\Http\Controllers\Master\KriteriaController;
+use App\Http\Controllers\Master\PenilaianController;
+use App\Http\Controllers\Master\PeriodeController;
 use App\Http\Controllers\Transaksi\DiagnosaController;
 use App\Http\Controllers\Transaksi\TrainingController;
 
@@ -21,7 +24,8 @@ use App\Http\Controllers\Transaksi\TrainingController;
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| contains the "web" mid
+dleware group. Now create something great!
 |
 */
 
@@ -32,13 +36,10 @@ use App\Http\Controllers\Transaksi\TrainingController;
 
 Route::group(['middleware' => 'App\Http\Middleware\SecureUrl'], function(){
 
-	Route::get('/', [HomeController::class, 'landing'])->name('landing');
-	Route::get('/signin', [HomeController::class, 'signin'])->name('signin');
-	Route::get('/signup', [HomeController::class, 'signup'])->name('signup');
+	Route::get('/', [HomeController::class, 'signin'])->name('signin');
 	Route::post('/auth', [VerifController::class, 'validasi'])->name('validasi');
-	Route::post('/register', [VerifController::class, 'registerUser'])->name('registerUser');
-	Route::get('/auth/google', [VerifController::class, 'redirectToGoogle'])->name('authgoogle');
-    Route::get('/auth/google/callback', [VerifController::class, 'handleGoogleCallback'])->name('authgooglecallback');
+	// Route::get('/auth/google', [VerifController::class, 'redirectToGoogle'])->name('authgoogle');
+    // Route::get('/auth/google/callback', [VerifController::class, 'handleGoogleCallback'])->name('authgooglecallback');
 
 });
 
@@ -79,36 +80,61 @@ Route::group(['middleware' => 'App\Http\Middleware\CheckSign'], function(){
 		Route::post('/fdatauser', [UserController::class, 'fdataUser'])->name('fdataUser');//->middleware('CheckPermission:userRead');
 		Route::post('/deluser', [UserController::class, 'delUser'])->name('delUser');//->middleware('CheckPermission:userDelete');
 
-        //RESOURCES : Penyakit
-		Route::get('/penyakit', [PenyakitController::class, 'penyakit'])->name('penyakit');//->middleware('CheckPermission:penyakitRead');
-		Route::post('/getdatapenyakit', [PenyakitController::class, 'getDataPenyakit'])->name('getDataPenyakit');//->middleware('CheckPermission:penyakitRead');
-		Route::post('/setactivepenyakit', [PenyakitController::class, 'setActivePenyakit'])->name('setActivePenyakit');//->middleware('CheckPermission:penyakitUpdate');
-		Route::post('/ucpenyakit', [PenyakitController::class, 'ucPenyakit'])->name('ucPenyakit');//->middleware('CheckPermission:penyakitCreate|penyakitUpdate');
-		Route::post('/fdatapenyakit', [PenyakitController::class, 'fdataPenyakit'])->name('fdataPenyakit');//->middleware('CheckPermission:penyakitRead');
-		Route::post('/delpenyakit', [PenyakitController::class, 'delPenyakit'])->name('delPenyakit');//->middleware('CheckPermission:penyakitDelete');
+        //RESOURCES : Kategori
+		Route::get('/kategori', [KategoriController::class, 'kategori'])->name('kategori');//->middleware('CheckPermission:kategoriRead');
+		Route::post('/getdatakategori', [KategoriController::class, 'getDataKategori'])->name('getDataKategori');//->middleware('CheckPermission:kategoriRead');
+		Route::post('/setactivekategori', [KategoriController::class, 'setActiveKategori'])->name('setActiveKategori');//->middleware('CheckPermission:kategoriUpdate');
+		Route::post('/uckategori', [KategoriController::class, 'ucKategori'])->name('ucKategori');//->middleware('CheckPermission:kategoriCreate|kategoriUpdate');
+		Route::post('/fdatakategori', [KategoriController::class, 'fdataKategori'])->name('fdataKategori');//->middleware('CheckPermission:kategoriRead');
+		Route::post('/delkategori', [KategoriController::class, 'delKategori'])->name('delKategori');//->middleware('CheckPermission:kategoriDelete');
+
+        //RESOURCES : Kriteria
+		Route::get('/kriteria', [KriteriaController::class, 'kriteria'])->name('kriteria');//->middleware('CheckPermission:kriteriaRead');
+		Route::post('/getdatakriteria', [KriteriaController::class, 'getDataKriteria'])->name('getDataKriteria');//->middleware('CheckPermission:kriteriaRead');
+		Route::post('/setactivekriteria', [KriteriaController::class, 'setActiveKriteria'])->name('setActiveKriteria');//->middleware('CheckPermission:kriteriaUpdate');
+		Route::post('/uckriteria', [KriteriaController::class, 'ucKriteria'])->name('ucKriteria');//->middleware('CheckPermission:kriteriaCreate|kriteriaUpdate');
+		Route::post('/fdatakriteria', [KriteriaController::class, 'fdataKriteria'])->name('fdataKriteria');//->middleware('CheckPermission:kriteriaRead');
+		Route::post('/delkriteria', [KriteriaController::class, 'delKriteria'])->name('delKriteria');//->middleware('CheckPermission:kriteriaDelete');
+
+        //RESOURCES : Atribut
+		Route::get('/atribut', [AtributController::class, 'atribut'])->name('atribut');//->middleware('CheckPermission:atributRead');
+		Route::post('/getdataatribut', [AtributController::class, 'getDataAtribut'])->name('getDataAtribut');//->middleware('CheckPermission:atributRead');
+		Route::post('/setactiveatribut', [AtributController::class, 'setActiveAtribut'])->name('setActiveAtribut');//->middleware('CheckPermission:atributUpdate');
+		Route::post('/ucatribut', [AtributController::class, 'ucAtribut'])->name('ucAtribut');//->middleware('CheckPermission:atributCreate|atributUpdate');
+		Route::post('/fdataatribut', [AtributController::class, 'fdataAtribut'])->name('fdataAtribut');//->middleware('CheckPermission:atributRead');
+		Route::post('/delatribut', [AtributController::class, 'delAtribut'])->name('delAtribut');//->middleware('CheckPermission:kategoriDelete');
+
+         //RESOURCES : Penilaian
+		Route::get('/penilaian', [PenilaianController::class, 'penilaian'])->name('penilaian');//->middleware('CheckPermission:penilaianRead');
+		Route::post('/getdatapenilaian', [PenilaianController::class, 'getDataPenilaian'])->name('getDataPenilaian');//->middleware('CheckPermission:penilaianRead');
+		Route::post('/setactivepenilaian', [PenilaianController::class, 'setActivePenilaian'])->name('setActivePenilaian');//->middleware('CheckPermission:penilaianUpdate');
+		Route::post('/ucpenilaian', [PenilaianController::class, 'ucPenilaian'])->name('ucPenilaian');//->middleware('CheckPermission:penilaianCreate|penilaianUpdate');
+		Route::post('/fdatapenilaian', [PenilaianController::class, 'fdataPenilaian'])->name('fdataPenilaian');//->middleware('CheckPermission:penilaianRead');
+		Route::post('/delpenilaian', [PenilaianController::class, 'delPenilaian'])->name('delPenilaian');//->middleware('CheckPermission:kategoriDelete');
+
+         //RESOURCES : Periode
+		Route::get('/periode', [PeriodeController::class, 'periode'])->name('periode');//->middleware('CheckPermission:periodeRead');
+		Route::post('/getdataperiode', [PeriodeController::class, 'getDataPeriode'])->name('getDataPeriode');//->middleware('CheckPermission:periodeRead');
+		Route::post('/setactiveperiode', [PeriodeController::class, 'setActivePeriode'])->name('setActivePeriode');//->middleware('CheckPermission:periodeUpdate');
+		Route::post('/ucperiode', [PeriodeController::class, 'ucPeriode'])->name('ucPeriode');//->middleware('CheckPermission:periodeCreate|periodeUpdate');
+		Route::post('/fdataperiode', [PeriodeController::class, 'fdataPeriode'])->name('fdataPeriode');//->middleware('CheckPermission:periodeRead');
+		Route::post('/delperiode', [PeriodeController::class, 'delPeriode'])->name('delPeriode');//->middleware('CheckPermission:kategoriDelete');
+
 
         //RESOURCES : Rules
-		Route::get('/gejala', [GejalaController::class, 'gejala'])->name('gejala');//->middleware('CheckPermission:gejalaRead');
-		Route::post('/getdatagejala', [GejalaController::class, 'getDataGejala'])->name('getDataGejala');//->middleware('CheckPermission:gejalaRead');
-		Route::post('/setactivegejala', [GejalaController::class, 'setActiveGejala'])->name('setActiveGejala');//->middleware('CheckPermission:gejalaUpdate');
-		Route::post('/ucgejala', [GejalaController::class, 'ucGejala'])->name('ucGejala');//->middleware('CheckPermission:gejalaCreate|gejalaUpdate');
-		Route::post('/fdatagejala', [GejalaController::class, 'fdataGejala'])->name('fdataGejala');//->middleware('CheckPermission:gejalaRead');
-		Route::post('/delgejala', [GejalaController::class, 'delGejala'])->name('delGejala');//->middleware('CheckPermission:penyakitDelete');
-
-        //RESOURCES : Gejala
 		Route::get('/rules', [RulesController::class, 'rules'])->name('rules');//->middleware('CheckPermission:rulesRead');
 		Route::post('/getdatarules', [RulesController::class, 'getDataRules'])->name('getDataRules');//->middleware('CheckPermission:rulesRead');
 		Route::post('/setactiverules', [RulesController::class, 'setActiveRules'])->name('setActiveRules');//->middleware('CheckPermission:rulesUpdate');
 		Route::post('/ucrules', [RulesController::class, 'ucRules'])->name('ucRules');//->middleware('CheckPermission:rulesCreate|rulesUpdate');
 		Route::post('/fdatarules', [RulesController::class, 'fdataRules'])->name('fdataRules');//->middleware('CheckPermission:rulesRead');
-		Route::post('/delrules', [RulesController::class, 'delRules'])->name('delRules');//->middleware('CheckPermission:penyakitDelete');
+		Route::post('/delrules', [RulesController::class, 'delRules'])->name('delRules');//->middleware('CheckPermission:kategoriDelete');
 
         //TRANSAKSI: DATA TRAINING
         Route::get('/training', [TrainingController::class, 'training'])->name('training');//->middleware('CheckPermission:trainingRead');
 		Route::post('/getdatatraining', [TrainingController::class, 'getDataTraining'])->name('getDataTraining');//->middleware('CheckPermission:trainingRead');
 		Route::post('/uctraining', [TrainingController::class, 'ucTraining'])->name('ucTraining');//->middleware('CheckPermission:trainingCreate|trainingUpdate');
 		Route::post('/fdatatraining', [TrainingController::class, 'fdataTraining'])->name('fdataTraining');//->middleware('CheckPermission:trainingRead');
-		Route::post('/deltraining', [TrainingController::class, 'delTraining'])->name('delTraining');//->middleware('CheckPermission:penyakitDelete');
+		Route::post('/deltraining', [TrainingController::class, 'delTraining'])->name('delTraining');//->middleware('CheckPermission:kategoriDelete');
 
         //RESOURCES: Diagnosa Pasien
         Route::get('/diagnosa', [DiagnosaController::class, 'diagnosa'])->name('diagnosa');//->middleware('CheckPermission:diagnosaRead');
@@ -117,7 +143,7 @@ Route::group(['middleware' => 'App\Http\Middleware\CheckSign'], function(){
 		Route::post('/setactivediagnosa', [DiagnosaController::class, 'setActiveDiagnosa'])->name('setActiveDiagnosa');//->middleware('CheckPermission:diagnosaUpdate');
 		Route::post('/ucdiagnosa', [DiagnosaController::class, 'ucDiagnosa'])->name('ucDiagnosa');//->middleware('CheckPermission:diagnosaCreate|diagnosaUpdate');
 		Route::post('/fdatadiagnosa', [DiagnosaController::class, 'fdataDiagnosa'])->name('fdataDiagnosa');//->middleware('CheckPermission:diagnosaRead');
-		Route::post('/deldiagnosa', [DiagnosaController::class, 'delDiagnosa'])->name('delDiagnosa');//->middleware('CheckPermission:penyakitDelete');
+		Route::post('/deldiagnosa', [DiagnosaController::class, 'delDiagnosa'])->name('delDiagnosa');//->middleware('CheckPermission:kategoriDelete');
 
 	});
 

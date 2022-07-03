@@ -42,12 +42,11 @@ function delay(callback, ms) {
 }
 
 
-//------------- table gejala -------------------
+//------------- table atribut -------------------
 var columns1 = [
     {data: 'id', name: 'id', render: function (data, type, row, meta) { return ''; }, orderable: false, searchable: false},
     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-    {data: 'gejala',    name: 'gejala'},
-    {data: 'pertanyaan',    name: 'pertanyaan'},
+    {data: 'atribut',    name: 'atribut'},
     {data: 'aksi',      name: 'aksi', orderable: false,},
 ];
 
@@ -55,7 +54,7 @@ var collapsedGroups = {};
 var top = '';
 
 // ---- initialize table ----
-var tblgejala = $('#tblgejala').DataTable({
+var tblatribut = $('#tblatribut').DataTable({
     pageLength : 10,
     searchDelay: 1200,
     scrollX: false,
@@ -65,12 +64,12 @@ var tblgejala = $('#tblgejala').DataTable({
     ajax: {
         type: "POST",
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-        url : base+'/app/getdatagejala',
+        url : base+'/app/getdataatribut',
         data: function (d) {
             d.filters = {
                 // ini disesuaikan dengan from yang ada di controller
-                gejala: $("#flgejala").val().trim() ? [$("#flgejala").parent().find('.statefil').text(), $("#flgejala").val()] : '',
-                pertanyaan: $("#flpertanyaan").val().trim() ? [$("#flpertanyaan").parent().find('.statefil').text(), $("#flpertanyaan").val()] : '',
+                atribut: $("#flatribut").val().trim() ? [$("#flatribut").parent().find('.statefil').text(), $("#flatribut").val()] : '',
+
             };
         }
     },
@@ -95,7 +94,7 @@ var tblgejala = $('#tblgejala').DataTable({
 	order: [[2, 'asc']],
     rowGroup: {
         enable: false,
-        dataSrc: ['gejala'],
+        dataSrc: ['atribut'],
         startRender: function(rows, group, level) {
             var all;
 
@@ -132,14 +131,14 @@ var tblgejala = $('#tblgejala').DataTable({
 });
 
 // ---- handle group click ----
-$('#tblgejala tbody').on('click', 'tr.dtrg-start', function() {
+$('#tblatribut tbody').on('click', 'tr.dtrg-start', function() {
     var name = $(this).data('name');
     collapsedGroups[name] = !collapsedGroups[name];
-    tblgejala.draw(false);
+    tblatribut.draw(false);
 });
 
 // ---- handle event on select row -----
-tblgejala.on('select deselect', function (e, dt, type, indexes) {
+tblatribut.on('select deselect', function (e, dt, type, indexes) {
     var data = dt.rows({selected: true}).data();
 
     idmulti = [];
@@ -157,33 +156,33 @@ tblgejala.on('select deselect', function (e, dt, type, indexes) {
 })
 
 // ---- handle delay typing search box ---
-$("#tblgejala .dataTables_filter input").unbind().on('keyup', delay(function (e) {
-    tblgejala.search( $(this).val() ).draw();
+$("#tblatribut .dataTables_filter input").unbind().on('keyup', delay(function (e) {
+    tblatribut.search( $(this).val() ).draw();
 }, 1200));
 
 // ---- handle delay typing header filter ----
 $('.fltable').on('keyup change', delay(function (e) {
-    tblgejala.column( $(this).data('column'))
+    tblatribut.column( $(this).data('column'))
     .search( $(this).val() )
     .draw();
 }, 1200));
 
 // ---- handle select all --------
-$(document).on('click', '#satblgejala', function() {
-    if ($('#satblgejala:checked').val() === 'on') {
-      tblgejala.rows().select();
+$(document).on('click', '#satblatribut', function() {
+    if ($('#satblatribut:checked').val() === 'on') {
+      tblatribut.rows().select();
     } else {
-      tblgejala.rows().deselect();
+      tblatribut.rows().deselect();
       $('.dsblsel').prop('disabled', true);
       $('.nsel').html('');
     }
 
 });
-// ------------- end table gejala ----------------
+// ------------- end table atribut ----------------
 
 
 $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-    tblgejala.columns.adjust().draw();
+    tblatribut.columns.adjust().draw();
 });
 
 
@@ -196,8 +195,8 @@ $('form#reg').on('submit', function(e){
     // menyesuaikan dengan tabel database
         var data = new FormData();
         data.append('id', (idmulti[0] ? idmulti[0] : ''));
-        data.append('gejala', $('#gejala').val().trim());
-        data.append('pertanyaan', $('#pertanyaan').val().trim());
+        data.append('atribut', $('#atribut').val().trim());
+
 
 
         if (validatex('#reg')){
@@ -205,7 +204,7 @@ $('form#reg').on('submit', function(e){
             btnLoading($('#reg'), true);
 
             $.ajax({
-                url: base+'/app/ucgejala',
+                url: base+'/app/ucatribut',
                 type: 'POST',
                 data: data,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -220,7 +219,7 @@ $('form#reg').on('submit', function(e){
                 },
                 success: function(response){ // Ketika proses pengiriman berhasil
 
-                    refreshTablex($('#tblgejala'));
+                    refreshTablex($('#tblatribut'));
                     if (response.status) {
                         notif(response.data, response.message, 'success');
                         resetForm();
@@ -253,7 +252,7 @@ function edit(el){
     data.append('id', el);
 
     $.ajax({
-        url: base+'/app/fdatagejala',
+        url: base+'/app/fdataatribut',
         type: 'POST',
         data: data,
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -275,8 +274,8 @@ function edit(el){
             idmulti.push(el);
 
 
-            $('#gejala').val(response.gejala);
-            $('#pertanyaan').val(response.pertanyaan);
+            $('#atribut').val(response.atribut);
+
 
         }
 
@@ -300,7 +299,7 @@ function hapus(el){
             data.append('id', el);
 
             return $.ajax({
-                url: base+'/app/delgejala',
+                url: base+'/app/delatribut',
                 type: 'POST',
                 data: data,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -329,9 +328,9 @@ function hapus(el){
 
         if (result.isConfirmed){
             if (result.value.status) {
-                refreshTablex($('#tblgejala'));
+                refreshTablex($('#tblatribut'));
                 idmulti = [];
-                showAlert(2, 'Success!', 'gejala succsessfully deleted', 'success', 2000, true);
+                showAlert(2, 'Success!', 'atribut succsessfully deleted', 'success', 2000, true);
             } else {
                 showAlert(1, 'ERROR!', 'Error : ' +result.value.message, 'error', 1800, true);
             }
@@ -365,7 +364,7 @@ function deleteAll() {
                 data.append('id', JSON.stringify(idmulti));
 
                 return $.ajax({
-                    url: base+'/app/delgejala',
+                    url: base+'/app/delatribut',
                     type: 'POST',
                     data: data,
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -392,10 +391,10 @@ function deleteAll() {
         }).then((result) => {
             if (result.isConfirmed){
                 if (result.value.status) {
-                    refreshTablex($('#tblgejala'));
+                    refreshTablex($('#tblatribut'));
                     idmulti = [];
 
-                    showAlert(2, 'Success!', 'gejala succsessfully deleted', 'success', 2000, true);
+                    showAlert(2, 'Success!', 'atribut succsessfully deleted', 'success', 2000, true);
                 } else {
                     showAlert(1, 'ERROR!', 'Error : ' +ajaxOptions+' <br> '+thrownError, 'error', 1800, true);
                 }
@@ -414,7 +413,7 @@ function resetForm(){
     $("select[data-control=select2].s2x").val(null).trigger('change');
     $('.form-control').removeClass("is-valid").removeClass("is-invalid");
 }
- 
+
 function resetSelect(table){
     idmulti = [];
     $('.dsblsel').prop('disabled', true);

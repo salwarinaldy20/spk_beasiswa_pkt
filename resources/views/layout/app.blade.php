@@ -215,7 +215,7 @@
 <!--end::Head-->
 <!--begin::Body-->
 
-<body id="kt_body" style="background-image: url({{asset('assets/media/patterns/bege.png')}})" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled waitMe_body">
+<body id="kt_body" style="background-image: url({{asset('assets/media/patterns/header-bg.png')}})" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled waitMe_body">
 
     <div class="waitMe_container img" style="background:#fff; z-index:99999999;">
         <div style="background:url({{asset('assets/media/logos/logo.svg')}}); background-size: auto 80px;" class="ld ld-breath"></div>

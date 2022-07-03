@@ -8,11 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Master\RulesPenilaian;
-use App\Models\Master\Penilaian;
-use App\Models\Master\Kriteria;
-use App\Models\Master\Atribut;
-use App\Models\View\VRulesPenilaian;
+use App\Models\Master\Kategori;
+
 
 use Session;
 use DB;
@@ -20,24 +17,20 @@ use Omjin;
 use Validator;
 use DataTables;
 
-class RulesController extends Controller
+class KategoriController extends Controller
 {
-    public function rules(){
-        $penilaian = Penilaian::where('active', 1)->get();
-        $kriteria = Kriteria::where('active', 1)->get();
-        $atribut = Atribut::where('active', 1)->get();
-
-        return view('app.master.rules', compact('penilaian','kriteria','atribut'));
+    public function kategori(){
+        return view('app.master.kategori');
     }
 
     public function generateButtonAct($status, $idu){
 
         $aksi = '';
 
-        if(Omjin::permission('ruleUpdate')){
+        if(Omjin::permission('kategoriUpdate')){
             $aksi .= '<a class="btnx btn-primary btnx-xs text-white me-2" onclick="edit(\''.$idu.'\');"> <i class="fa fa-pencil-alt text-white"></i></a>';
         }
-        if(Omjin::permission('ruleDelete')){
+        if(Omjin::permission('kategoriDelete')){
             $aksi .= '<a class="btnx btn-danger btnx-xs text-white" onclick="hapus(\''.$idu.'\');"> <i class="fa fa-times text-white"></i></a>';
         }
 
@@ -45,11 +38,11 @@ class RulesController extends Controller
         return $aksi;
     }
 
-// nampilin ke tabel
-    public function getDataRules(Request $request){
 
-        // Penyakit disini itu nama Modelnya
-        $qry = VRulesPenilaian::where('active', 1);
+    public function getDataKategori(Request $request){
+
+        // Kategori disini itu nama Modelnya
+        $qry = Kategori::where('active', 1);
 
         $filters = $request->filters;
         $search = $request->search;
@@ -74,15 +67,10 @@ class RulesController extends Controller
 
 			$res = (Object) $res;
 			return [
-                // Sesuaikan dengan database
 				'id'=>$res->id,
 				'DT_RowIndex'=>$res->DT_RowIndex,
-				'nama_penilaian'=>$res->nama_penilaian,
-				'kode_kriteria'=>$res->kode_kriteria,
-				'kriteria'=>$res->kriteria,
-				'kepentingan_kriteria'=>$res->kepentingan_kriteria,
-				'atribut'=>$res->atribut,
-				'nilai_atribut'=>$res->nilai_atribut,
+				'kode_kategori'=>$res->kode_kategori,
+				'kategori'=>$res->kategori,
 				'aksi'=>$res->aksi];
 		});
 
@@ -91,17 +79,16 @@ class RulesController extends Controller
 
     }
 
-    public function fdataRules(Request $request){
+
+
+    public function fdataKategori(Request $request){
         $idu = $request->id;
-        $data = RulesPenilaian::find($idu);
+        $data = Kategori::find($idu);
 
         if($data){
             $datax = array(
-                'id_penilaian'=>$data->id_penilaian,
-				'id_kriteria'=>$data->id_kriteria,
-				'kepentingan_kriteria'=>$data->kepentingan_kriteria,
-				'id_atribut'=>$data->id_atribut,
-				'nilai_atribut'=>$data->nilai_atribut,
+                'kode_kategori' => $data->kode_kategori,
+                'kategori' => $data->kategori,
             );
         } else {
             $datax = null;
@@ -110,28 +97,23 @@ class RulesController extends Controller
     	return response()->json($datax);
     }
 
-    public function ucRules(Request $request){
+    public function ucKategori(Request $request){
 
     	$idu = $request->id;
 
-		$id_penilaian = $request->id_penilaian;
-        $id_kriteria = $request->id_kriteria;
-        $kepentingan_kriteria = $request->kepentingan_kriteria;
-        $id_atribut = $request->id_atribut;
-        $nilai_atribut = $request->nilai_atribut;
+		$kode_kategori = $request->kode_kategori;
+        $kategori = $request->kategori;
 
 		DB::beginTransaction();
         try {
 
             $query1 = [
-                'id_penilaian' => $id_penilaian,
-                'id_kriteria' => $id_kriteria,
-                'kepentingan_kriteria' => $kepentingan_kriteria,
-                'id_atribut' => $id_atribut,
-                'nilai_atribut' => $nilai_atribut,
+                'kode_kategori' => $kode_kategori,
+                'kategori' => $kategori,
+
             ];
 
-            $sql = RulesPenilaian::updateOrCreate( ['id' => $idu], $query1 );
+            $sql = Kategori::updateOrCreate( ['id' => $idu], $query1 );
 
 
             DB::commit();
@@ -144,7 +126,7 @@ class RulesController extends Controller
 
     }
 
-    public function delRules(Request $request){
+    public function delKategori(Request $request){
 
 
 		DB::beginTransaction();
@@ -154,12 +136,12 @@ class RulesController extends Controller
             if(is_array($idx)){
 
                 $id = array_map(function($val) { return $val; }, $idx);
-                $sql = RulesPenilaian::whereIn('id', $id)->update(['active' => 0]);
+                $sql = Kategori::whereIn('id', $id)->update(['active' => 0]);
 
             } else {
 
                 $idu = $request->id;
-                $sql = RulesPenilaian::find($idu);
+                $sql = Kategori::find($idu);
 
                 $sql1 = $sql->update(['active' => 0]);
 
@@ -168,11 +150,13 @@ class RulesController extends Controller
 
 
             DB::commit();
-            return $this->successResponse('Rules succesfully deleted', null);
+            return $this->successResponse('Kategori succesfully deleted', null);
         } catch (\Exception $e) {
             DB::rollback();
             return $this->errorResponse($e->getMessage(), $e->getMessage());
         }
     }
+
+
 
 }

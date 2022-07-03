@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use BaseModels;
 
-class Jawaban extends BaseModels
+class Kategori  extends BaseModels
 {
     use HasFactory;
-    
-    protected $table = 'ms_jawaban';
+
+    protected $table = 'ms_kategori_beasiswa';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $keyType = 'string';

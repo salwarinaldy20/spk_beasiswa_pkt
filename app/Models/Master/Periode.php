@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Models\master;
+namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use BaseModels;
 
-
-
-class Gejala extends BaseModels
+class Periode extends BaseModels
 {
     use HasFactory;
 
-    protected $table = 'ms_gejala';
+    protected $table = 'ms_periode';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $keyType = 'string';
@@ -30,4 +28,5 @@ class Gejala extends BaseModels
     {
         return 'string';
     }
+
 }

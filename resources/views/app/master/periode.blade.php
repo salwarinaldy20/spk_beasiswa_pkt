@@ -6,7 +6,7 @@
 
 @section('panelhead')
 <div class="page-title d-flex flex-column me-3">
-    <h1 class="d-flex text-white fw-bolder my-1 fs-3">Penyakit</h1>
+    <h1 class="d-flex text-white fw-bolder my-1 fs-3">Kriteria</h1>
     <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
         <li class="breadcrumb-item text-white opacity-75">
             <a href="{{route('dashboard')}}" class="text-white text-hover-primary">Home</a>
@@ -18,7 +18,7 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-white opacity-75 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-white opacity-75">Penyakit</li>
+        <li class="breadcrumb-item text-white opacity-75">Periode</li>
     </ul>
 </div>
 @endsection
@@ -29,7 +29,7 @@
     <div class="card-header border-0 pt-6">
         <!--begin::Card title-->
         <div class="card-title flex-column">
-            <h2 class="mb-1">List Penyakit</h2>
+            <h2 class="mb-1">List Periode</h2>
             <div class="fs-6 fw-bold text-muted">Manage Diseases</div>
         </div>
 
@@ -39,16 +39,16 @@
     <div class="card-body py-4">
 
         <div>
-            @if (Omjin::permission('penyakitCreate'))
+            @if (Omjin::permission('periodeCreate'))
             <button type="button" data-state="0" id="add" class="btn btn-md btn-outline btn-outline-warning btn-active-light-warning me-2 hidex" onclick="toggleLayout($(this))">Add</button>
             @endif
-            @if (Omjin::permission('penyakitDelete'))
+            @if (Omjin::permission('periodeDelete'))
             <button type="button" class="btn btn-md btn-outline btn-outline-warning  btn-active-light-warning  me-2 hidex dsblsel" disabled onclick="deleteAll()">Delete <span class="nsel"></span></button>
             @endif
-            @if (Omjin::permission('penyakitUpdate'))
+            @if (Omjin::permission('periodeUpdate'))
             <button type="button" class="btn btn-md btn-outline btn-outline-warning btn-active-light-warning  me-2 hidex dsblsel" onclick="activeDeactive()" disabled>Activate / Deactivate <span class="nsel"></span></button>
             @endif
-            <button type="button" class="btn btn-md btn-outline btn-outline-warning  btn-active-light-warning  me-2 hidex refresh"  data-refreshx="tblpenyakit"><i class="fa fa-sync-alt text-warning"></i></button>
+            <button type="button" class="btn btn-md btn-outline btn-outline-warning  btn-active-light-warning  me-2 hidex refresh"  data-refreshx="tblperiode"><i class="fa fa-sync-alt text-warning"></i></button>
         </div>
         {{-- 7771235312V451 --}}
         <div class="separator separator-dashed my-4"></div>
@@ -67,20 +67,19 @@
 
                 <div class="table-responsive">
 
-                    <table class="table table-row-bordered display nowrap" id="tblpenyakit" style="width:100%">
+                    <table class="table table-row-bordered display nowrap" id="tblperiode" style="width:100%">
                         <thead>
                             <tr>
                                 <th style="align-items: center; width: 5px !important;">#</th>
                                 <th width="1px">No</th>
-                                <th width="150px">Nama Penyakit</th>
-                                <th width="70px">Penyebab</th>
-                                <th width="150px">Solusi</th>
-                                <th width="50px">Aksi</th>
+                                <th width="50px">Periode</th>
+                                <th width="70px">Aksi</th>
+
                             </tr>
                         </thead>
                         <thead>
                             <tr>
-                                <td class="p-1" style="align-items: center; width: 5px !important;"><input type="checkbox" class="ckbsa" id="satblpenyakit"/></td>
+                                <td class="p-1" style="align-items: center; width: 5px !important;"><input type="checkbox" class="ckbsa" id="satblperiode"/></td>
                                 <td class="p-1"></td>
                                 <td class="p-1">
                                     <div class="input-group">
@@ -96,43 +95,11 @@
                                                 </div>
                                               </div>
                                         </div>
-                                        <input  id="flnama_penyakit" type="text" data-column="3" class="form-control py-0 fltable" placeholder="">
+                                        <input  id="flperiode" type="text" data-column="3" class="form-control py-0 fltable" placeholder="">
                                     </div>
                                 </td>
-                                <td class="p-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="btn-group">
-                                                <button class="btn btnf btn-secondary btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                  <span class="statefil">&#128270;</i></span>
-                                                </button>
-                                                <div class="dropdown-menu menuf">
-                                                    @foreach (Omjin::dtFilterCategory('string') as $item)
-                                                    <a class="dropdown-item itemfil" data-value="{{$item[0]}}" href="javascript:">{{$item[1]}}</a>
-                                                    @endforeach
-                                                </div>
-                                              </div>
-                                        </div>
-                                        <input  id="flpenyebab" type="text" data-column="3" class="form-control py-0 fltable" placeholder="">
-                                    </div>
-                                </td>
-                                <td class="p-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="btn-group">
-                                                <button class="btn btnf btn-secondary btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                  <span class="statefil">&#128270;</i></span>
-                                                </button>
-                                                <div class="dropdown-menu menuf">
-                                                    @foreach (Omjin::dtFilterCategory('string') as $item)
-                                                    <a class="dropdown-item itemfil" data-value="{{$item[0]}}" href="javascript:">{{$item[1]}}</a>
-                                                    @endforeach
-                                                </div>
-                                              </div>
-                                        </div>
-                                        <input  id="flsolusi" type="text" data-column="4" class="form-control py-0 fltable" placeholder="">
-                                    </div>
-                                </td>
+
+
                                 <td class="p-1"></td>
                             </tr>
                         </thead>
@@ -149,25 +116,10 @@
 
                 <form id="reg" novalidate="novalidate">
                     <div class="form-group row fv-row mb-5">
-                        <label for="example-text-input" class="col-md-2 col-form-label">Nama Penyakit</label>
+                        <label for="example-text-input" class="col-md-2 col-form-label">Periode</label>
                         <div class="col-md-10">
-                            <input class="form-control form-control-solid" autocomplete="off" id="nama_penyakit" name="nama_penyakit" type="search"
-                                placeholder="Nama Penyakit" required>
-                        </div>
-                    </div>
-                    <div class="form-group row fv-row mb-5">
-                        <label for="example-text-input" class="col-md-2 col-form-label">Penyebab</label>
-                        <div class="col-md-10">
-                            <input class="form-control form-control-solid" autocomplete="off" id="penyebab" name="penyebab" type="search"
-                                placeholder="Penyebab" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group row fv-row mb-5">
-                        <label for="example-text-input" class="col-md-2 col-form-label">Solusi</label>
-                        <div class="col-md-10">
-                            <textarea cols="30" rows="3" class="form-control form-control-solid" autocomplete="off" id="solusi" name="solusi" placeholder="Solusi" required>
-                            </textarea>
+                            <input class="form-control form-control-solid" autocomplete="off" id="periode" name="periode" type="search"
+                                placeholder="Periode" required>
                         </div>
                     </div>
 
@@ -196,5 +148,5 @@
 @endsection
 
 @section('customjs')
-<script src="{{ asset('js/penyakit.js') }}"></script>
+<script src="{{ asset('js/periode.js') }}"></script>
 @endsection

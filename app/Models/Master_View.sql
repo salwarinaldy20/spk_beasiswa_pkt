@@ -151,3 +151,15 @@ tr_data_alternatif_detail
 - updated_by
 - updated_on
 
+--=================================================================================
+
+create view vw_rules_penilaian as
+SELECT
+a.*,
+b.nama_penilaian,
+c.kode_kriteria, c.kriteria,
+d.atribut
+FROM ms_rules_penilaian a
+left join ms_penilaian b on a.id_penilaian = b.id
+left join ms_kriteria c on a.id_kriteria = c.id
+left join ms_atribut d on a.id_atribut = d.id

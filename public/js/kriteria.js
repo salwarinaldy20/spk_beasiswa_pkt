@@ -42,13 +42,13 @@ function delay(callback, ms) {
 }
 
 
-//------------- table penyakit -------------------
+//------------- table kriteria -------------------
 var columns1 = [
     {data: 'id', name: 'id', render: function (data, type, row, meta) { return ''; }, orderable: false, searchable: false},
     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-    {data: 'nama_penyakit',    name: 'nama_penyakit'},
-    {data: 'penyebab',    name: 'penyebab'},
-    {data: 'solusi',  name: 'solusi'},
+    {data: 'kode_kriteria',    name: 'kode_kriteria'},
+    {data: 'kriteria',    name: 'kriteria'},
+
     {data: 'aksi',      name: 'aksi', orderable: false,},
 ];
 
@@ -56,7 +56,7 @@ var collapsedGroups = {};
 var top = '';
 
 // ---- initialize table ----
-var tblpenyakit = $('#tblpenyakit').DataTable({
+var tblkriteria = $('#tblkriteria').DataTable({
     pageLength : 10,
     searchDelay: 1200,
     scrollX: false,
@@ -66,13 +66,12 @@ var tblpenyakit = $('#tblpenyakit').DataTable({
     ajax: {
         type: "POST",
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-        url : base+'/app/getdatapenyakit',
+        url : base+'/app/getdatakriteria',
         data: function (d) {
             d.filters = {
                 // ini disesuaikan dengan from yang ada di controller
-                nama_penyakit: $("#flnama_penyakit").val().trim() ? [$("#flnama_penyakit").parent().find('.statefil').text(), $("#flnama_penyakit").val()] : '',
-                penyebab: $("#flpenyebab").val().trim() ? [$("#flpenyebab").parent().find('.statefil').text(), $("#flpenyebab").val()] : '',
-                solusi: $("#flsolusi").val().trim() ? [$("#flsolusi").parent().find('.statefil').text(), $("#flsolusi").val()] : '',
+                kode_kriteria: $("#flkode_kriteria").val().trim() ? [$("#flkode_kriteria").parent().find('.statefil').text(), $("#flkode_kriteria").val()] : '',
+                kriteria: $("#flkriteria").val().trim() ? [$("#flkriteria").parent().find('.statefil').text(), $("#flkriteria").val()] : '',
             };
         }
     },
@@ -97,7 +96,7 @@ var tblpenyakit = $('#tblpenyakit').DataTable({
 	order: [[2, 'asc']],
     rowGroup: {
         enable: false,
-        dataSrc: ['nama_penyakit'],
+        dataSrc: ['kode_kriteria'],
         startRender: function(rows, group, level) {
             var all;
 
@@ -134,14 +133,14 @@ var tblpenyakit = $('#tblpenyakit').DataTable({
 });
 
 // ---- handle group click ----
-$('#tblpenyakit tbody').on('click', 'tr.dtrg-start', function() {
+$('#tblkriteria tbody').on('click', 'tr.dtrg-start', function() {
     var name = $(this).data('name');
     collapsedGroups[name] = !collapsedGroups[name];
-    tblpenyakit.draw(false);
+    tblkriteria.draw(false);
 });
 
 // ---- handle event on select row -----
-tblpenyakit.on('select deselect', function (e, dt, type, indexes) {
+tblkriteria.on('select deselect', function (e, dt, type, indexes) {
     var data = dt.rows({selected: true}).data();
 
     idmulti = [];
@@ -159,33 +158,33 @@ tblpenyakit.on('select deselect', function (e, dt, type, indexes) {
 })
 
 // ---- handle delay typing search box ---
-$("#tblpenyakit .dataTables_filter input").unbind().on('keyup', delay(function (e) {
-    tblpenyakit.search( $(this).val() ).draw();
+$("#tblkriteria .dataTables_filter input").unbind().on('keyup', delay(function (e) {
+    tblkriteria.search( $(this).val() ).draw();
 }, 1200));
 
 // ---- handle delay typing header filter ----
 $('.fltable').on('keyup change', delay(function (e) {
-    tblpenyakit.column( $(this).data('column'))
+    tblkriteria.column( $(this).data('column'))
     .search( $(this).val() )
     .draw();
 }, 1200));
 
 // ---- handle select all --------
-$(document).on('click', '#satblpenyakit', function() {
-    if ($('#satblpenyakit:checked').val() === 'on') {
-      tblpenyakit.rows().select();
+$(document).on('click', '#satblkriteria', function() {
+    if ($('#satblkriteria:checked').val() === 'on') {
+      tblkriteria.rows().select();
     } else {
-      tblpenyakit.rows().deselect();
+      tblkriteria.rows().deselect();
       $('.dsblsel').prop('disabled', true);
       $('.nsel').html('');
     }
 
 });
-// ------------- end table penyakit ----------------
+// ------------- end table kriteria ----------------
 
 
 $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-    tblpenyakit.columns.adjust().draw();
+    tblkriteria.columns.adjust().draw();
 });
 
 
@@ -198,16 +197,15 @@ $('form#reg').on('submit', function(e){
     // menyesuaikan dengan tabel database
         var data = new FormData();
         data.append('id', (idmulti[0] ? idmulti[0] : ''));
-        data.append('nama_penyakit', $('#nama_penyakit').val().trim());
-        data.append('penyebab', $('#penyebab').val().trim());
-        data.append('solusi', $('#solusi').val().trim());
+        data.append('kode_kriteria', $('#kode_kriteria').val().trim());
+        data.append('kriteria', $('#kriteria').val().trim());
 
         if (validatex('#reg')){
 
             btnLoading($('#reg'), true);
 
             $.ajax({
-                url: base+'/app/ucpenyakit',
+                url: base+'/app/uckriteria',
                 type: 'POST',
                 data: data,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -222,7 +220,7 @@ $('form#reg').on('submit', function(e){
                 },
                 success: function(response){ // Ketika proses pengiriman berhasil
 
-                    refreshTablex($('#tblpenyakit'));
+                    refreshTablex($('#tblkriteria'));
                     if (response.status) {
                         notif(response.data, response.message, 'success');
                         resetForm();
@@ -255,7 +253,7 @@ function edit(el){
     data.append('id', el);
 
     $.ajax({
-        url: base+'/app/fdatapenyakit',
+        url: base+'/app/fdatakriteria',
         type: 'POST',
         data: data,
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -277,9 +275,8 @@ function edit(el){
             idmulti.push(el);
 
 
-            $('#nama_penyakit').val(response.nama_penyakit);
-            $('#penyebab').val(response.penyebab);
-            $('#solusi').val(response.solusi);
+            $('#kode_kriteria').val(response.kode_kriteria);
+            $('#kriteria').val(response.kriteria);
 
         }
 
@@ -303,7 +300,7 @@ function hapus(el){
             data.append('id', el);
 
             return $.ajax({
-                url: base+'/app/delpenyakit',
+                url: base+'/app/delkriteria',
                 type: 'POST',
                 data: data,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -332,9 +329,9 @@ function hapus(el){
 
         if (result.isConfirmed){
             if (result.value.status) {
-                refreshTablex($('#tblpenyakit'));
+                refreshTablex($('#tblkriteria'));
                 idmulti = [];
-                showAlert(2, 'Success!', 'penyakit succsessfully deleted', 'success', 2000, true);
+                showAlert(2, 'Success!', 'kriteria succsessfully deleted', 'success', 2000, true);
             } else {
                 showAlert(1, 'ERROR!', 'Error : ' +result.value.message, 'error', 1800, true);
             }
@@ -368,7 +365,7 @@ function deleteAll() {
                 data.append('id', JSON.stringify(idmulti));
 
                 return $.ajax({
-                    url: base+'/app/delpenyakit',
+                    url: base+'/app/delkriteria',
                     type: 'POST',
                     data: data,
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -395,10 +392,10 @@ function deleteAll() {
         }).then((result) => {
             if (result.isConfirmed){
                 if (result.value.status) {
-                    refreshTablex($('#tblpenyakit'));
+                    refreshTablex($('#tblkriteria'));
                     idmulti = [];
 
-                    showAlert(2, 'Success!', 'penyakit succsessfully deleted', 'success', 2000, true);
+                    showAlert(2, 'Success!', 'kriteria succsessfully deleted', 'success', 2000, true);
                 } else {
                     showAlert(1, 'ERROR!', 'Error : ' +ajaxOptions+' <br> '+thrownError, 'error', 1800, true);
                 }

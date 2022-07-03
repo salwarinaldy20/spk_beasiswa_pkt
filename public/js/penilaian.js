@@ -42,16 +42,11 @@ function delay(callback, ms) {
 }
 
 
-//------------- table rules -------------------
+//------------- table penilaian -------------------
 var columns1 = [
     {data: 'id', name: 'id', render: function (data, type, row, meta) { return ''; }, orderable: false, searchable: false},
     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
     {data: 'nama_penilaian',    name: 'nama_penilaian'},
-    {data: 'kode_kriteria',    name: 'kode_kriteria'},
-    {data: 'kriteria',  name: 'kriteria'},
-    {data: 'kepentingan_kriteria',  name: 'kepentingan_kriteria'},
-    {data: 'atribut',  name: 'atribut'},
-    {data: 'nilai_atribut',  name: 'nilai_atribut'},
     {data: 'aksi',      name: 'aksi', orderable: false,},
 ];
 
@@ -59,7 +54,7 @@ var collapsedGroups = {};
 var top = '';
 
 // ---- initialize table ----
-var tblrules = $('#tblrules').DataTable({
+var tblpenilaian = $('#tblpenilaian').DataTable({
     pageLength : 10,
     searchDelay: 1200,
     scrollX: false,
@@ -69,17 +64,11 @@ var tblrules = $('#tblrules').DataTable({
     ajax: {
         type: "POST",
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-        url : base+'/app/getdatarules',
+        url : base+'/app/getdatapenilaian',
         data: function (d) {
             d.filters = {
                 // ini disesuaikan dengan from yang ada di controller
                 nama_penilaian: $("#flnama_penilaian").val().trim() ? [$("#flnama_penilaian").parent().find('.statefil').text(), $("#flnama_penilaian").val()] : '',
-                kode_kriteria: $("#flkode_kriteria").val().trim() ? [$("#flkode_kriteria").parent().find('.statefil').text(), $("#flkode_kriteria").val()] : '',
-                kriteria: $("#flkriteria").val().trim() ? [$("#flkriteria").parent().find('.statefil').text(), $("#flkriteria").val()] : '',
-                kepentingan_kriteria: $("#flkepentingan_kriteria").val().trim() ? [$("#flkepentingan_kriteria").parent().find('.statefil').text(), $("#flkepentingan_kriteria").val()] : '',
-                atribut: $("#flatribut").val().trim() ? [$("#flatribut").parent().find('.statefil').text(), $("#flatribut").val()] : '',
-                nilai_atribut: $("#flnilai_atribut").val().trim() ? [$("#flnilai_atribut").parent().find('.statefil').text(), $("#flnilai_atribut").val()] : '',
-
             };
         }
     },
@@ -94,13 +83,6 @@ var tblrules = $('#tblrules').DataTable({
         orderable: false,
         className: 'select-checkbox',
         targets:   0
-    }, {
-        className: 'text-center',
-        targets:   4
-    }, {
-        orderable: false,
-        className: 'text-center',
-        targets:   5
     }],
     select: {
         style: 'os',
@@ -111,7 +93,7 @@ var tblrules = $('#tblrules').DataTable({
 	order: [[2, 'asc']],
     rowGroup: {
         enable: false,
-        dataSrc: ['id_penilaian'],
+        dataSrc: ['nama_penilaian'],
         startRender: function(rows, group, level) {
             var all;
 
@@ -148,14 +130,14 @@ var tblrules = $('#tblrules').DataTable({
 });
 
 // ---- handle group click ----
-$('#tblrules tbody').on('click', 'tr.dtrg-start', function() {
+$('#tblpenilaian tbody').on('click', 'tr.dtrg-start', function() {
     var name = $(this).data('name');
     collapsedGroups[name] = !collapsedGroups[name];
-    tblrules.draw(false);
+    tblpenilaian.draw(false);
 });
 
 // ---- handle event on select row -----
-tblrules.on('select deselect', function (e, dt, type, indexes) {
+tblpenilaian.on('select deselect', function (e, dt, type, indexes) {
     var data = dt.rows({selected: true}).data();
 
     idmulti = [];
@@ -173,33 +155,33 @@ tblrules.on('select deselect', function (e, dt, type, indexes) {
 })
 
 // ---- handle delay typing search box ---
-$("#tblrules .dataTables_filter input").unbind().on('keyup', delay(function (e) {
-    tblrules.search( $(this).val() ).draw();
+$("#tblpenilaian .dataTables_filter input").unbind().on('keyup', delay(function (e) {
+    tblpenilaian.search( $(this).val() ).draw();
 }, 1200));
 
 // ---- handle delay typing header filter ----
 $('.fltable').on('keyup change', delay(function (e) {
-    tblrules.column( $(this).data('column'))
+    tblpenilaian.column( $(this).data('column'))
     .search( $(this).val() )
     .draw();
 }, 1200));
 
 // ---- handle select all --------
-$(document).on('click', '#satblrules', function() {
-    if ($('#satblrules:checked').val() === 'on') {
-      tblrules.rows().select();
+$(document).on('click', '#satblpenilaian', function() {
+    if ($('#satblpenilaian:checked').val() === 'on') {
+      tblpenilaian.rows().select();
     } else {
-      tblrules.rows().deselect();
+      tblpenilaian.rows().deselect();
       $('.dsblsel').prop('disabled', true);
       $('.nsel').html('');
     }
 
 });
-// ------------- end table Rules ----------------
+// ------------- end table penilaian ----------------
 
 
 $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-    tblrules.columns.adjust().draw();
+    tblpenilaian.columns.adjust().draw();
 });
 
 
@@ -212,18 +194,14 @@ $('form#reg').on('submit', function(e){
     // menyesuaikan dengan tabel database
         var data = new FormData();
         data.append('id', (idmulti[0] ? idmulti[0] : ''));
-        data.append('id_penilaian', $('#id_penilaian').val().trim());
-        data.append('id_kriteria', $('#id_kriteria').val().trim());
-        data.append('kepentingan_kriteria', $('#kepentingan_kriteria').val().trim());
-        data.append('id_atribut', $('#id_atribut').val().trim());
-        data.append('nilai_atribut', $('#nilai_atribut').val().trim());
+        data.append('nama_penilaian', $('#nama_penilaian').val().trim());
 
         if (validatex('#reg')){
 
             btnLoading($('#reg'), true);
 
             $.ajax({
-                url: base+'/app/ucrules',
+                url: base+'/app/ucpenilaian',
                 type: 'POST',
                 data: data,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -238,7 +216,7 @@ $('form#reg').on('submit', function(e){
                 },
                 success: function(response){ // Ketika proses pengiriman berhasil
 
-                    refreshTablex($('#tblrules'));
+                    refreshTablex($('#tblpenilaian'));
                     if (response.status) {
                         notif(response.data, response.message, 'success');
                         resetForm();
@@ -253,8 +231,8 @@ $('form#reg').on('submit', function(e){
                     showAlert(1, 'ERROR!', 'Error : '+xhr.responseText, 'error', '', true);
                 }
             });
-        } else {
 
+        } else {
             notif('Ups', 'Please fill form correctly', 'error');
             return false;
         }
@@ -271,7 +249,7 @@ function edit(el){
     data.append('id', el);
 
     $.ajax({
-        url: base+'/app/fdatarules',
+        url: base+'/app/fdatapenilaian',
         type: 'POST',
         data: data,
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -293,11 +271,8 @@ function edit(el){
             idmulti.push(el);
 
 
-            $('#id_penilaian').val(response.id_penilaian).trigger('change');
-            $('#id_kriteria').val(response.id_kriteria).trigger('change');
-            $('#kepentingan_kriteria').val(response.kepentingan_kriteria);
-            $('#id_atribut').val(response.id_atribut).trigger('change');
-            $('#nilai_atribut').val(response.nilai_atribut);
+            $('#nama_penilaian').val(response.nama_penilaian);
+
 
         }
 
@@ -321,7 +296,7 @@ function hapus(el){
             data.append('id', el);
 
             return $.ajax({
-                url: base+'/app/delrules',
+                url: base+'/app/delpenilaian',
                 type: 'POST',
                 data: data,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -350,9 +325,9 @@ function hapus(el){
 
         if (result.isConfirmed){
             if (result.value.status) {
-                refreshTablex($('#tblrules'));
+                refreshTablex($('#tblpenilaian'));
                 idmulti = [];
-                showAlert(2, 'Success!', 'rules succsessfully deleted', 'success', 2000, true);
+                showAlert(2, 'Success!', 'penilaian succsessfully deleted', 'success', 2000, true);
             } else {
                 showAlert(1, 'ERROR!', 'Error : ' +result.value.message, 'error', 1800, true);
             }
@@ -386,7 +361,7 @@ function deleteAll() {
                 data.append('id', JSON.stringify(idmulti));
 
                 return $.ajax({
-                    url: base+'/app/delrules',
+                    url: base+'/app/delpenilaian',
                     type: 'POST',
                     data: data,
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -413,10 +388,10 @@ function deleteAll() {
         }).then((result) => {
             if (result.isConfirmed){
                 if (result.value.status) {
-                    refreshTablex($('#tblrules'));
+                    refreshTablex($('#tblpenilaian'));
                     idmulti = [];
 
-                    showAlert(2, 'Success!', 'rules succsessfully deleted', 'success', 2000, true);
+                    showAlert(2, 'Success!', 'penilaian succsessfully deleted', 'success', 2000, true);
                 } else {
                     showAlert(1, 'ERROR!', 'Error : ' +ajaxOptions+' <br> '+thrownError, 'error', 1800, true);
                 }

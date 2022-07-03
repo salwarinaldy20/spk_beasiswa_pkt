@@ -33,7 +33,7 @@
 				<div class="d-flex flex-row-fluid flex-column text-center p-10 pt-lg-20">
 					<!--begin::Logo-->
                     {{-- Mengarah ke halamana awalnya --}}
-					<a href="{{route('landing')}}" class="py-9 mb-5">
+					<a href="{{route('signin')}}" class="py-9 mb-5">
 						<img alt="Logo" src="{{ asset('assets/media/logos/logo.svg') }}" class="h-60px">
 					</a>
 					<!--end::Logo-->
@@ -109,9 +109,6 @@
 							<h1 class="text-dark mb-3">Sign In</h1>
 							<!--end::Title-->
 							<!--begin::Link-->
-							<div class="text-gray-400 fw-bold fs-4">New Here?
-							<a href="{{route('signup')}}" class="link-primary fw-bolder">Create an Account</a></div>
-							<!--end::Link-->
 						</div>
 
 						<div class="fv-row mb-5">
@@ -143,13 +140,6 @@
 								<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
 							</button>
 							<!--end::Submit button-->
-							<!--begin::Separator-->
-							<div class="text-center text-muted text-uppercase fw-bolder mb-5">or</div>
-							<!--end::Separator-->
-							<!--begin::Google link-->
-							<a href="{{ route('authgoogle') }}" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
-							<img alt="Logo" src="{{asset('assets/media/svg/brand-logos/google-icon.svg')}}" class="h-20px me-3">Continue with Google</a>
-							<!--end::Google link-->
 						</div>
 						<!--end::Actions-->
 					<div></div></form>
@@ -162,7 +152,7 @@
 			<div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
 				<!--begin::Links-->
 				<div class="d-flex flex-center fw-bold fs-6">
-					<small class="text-center" style="color: #6a96d7;">Copyright &copy; 2022 | Sistem Pakar Diagnosis Mental Illness</small>
+					<small class="text-center" style="color: #6a96d7;">Copyright &copy; 2022 | Sistem Pendukung Keputusan Beasiswa</small>
 				</div>
 				<!--end::Links-->
 			</div>

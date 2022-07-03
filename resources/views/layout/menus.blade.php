@@ -4,23 +4,6 @@
     </a>
 </div>
 
-<div class="menu-item me-lg-1  {{ Omjin::set_active(['diagnosa'], 'here show') }}">
-    <a href="{{route('diagnosa')}}" class="menu-link py-3">
-        <span class="menu-title">Diagnosa</span>
-    </a>
-</div>
-
-<div class="menu-item me-lg-1  {{ Omjin::set_active(['profile'], 'here show') }}">
-    <a href="{{route('profile')}}" class="menu-link py-3">
-        <span class="menu-title">List Diagnosa</span>
-    </a>
-</div>
-
-<div class="menu-item me-lg-1  {{ Omjin::set_active(['training'], 'here show') }}">
-    <a href="{{route('training')}}" class="menu-link py-3">
-        <span class="menu-title">Training</span>
-    </a>
-</div>
 
 
 {{-- @if(Omjin::permission(['aclRead','quotaRead'])) --}}
@@ -31,33 +14,66 @@
         <span class="menu-arrow d-lg-none"></span>
     </span>
     <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
+
         {{-- @if(Omjin::permission(['aclRead'])) --}}
         <div class="menu-item">
-            <a href="{{route('gejala')}}" class="menu-link {{ Omjin::set_active(['gejala']) }}">
+            <a href="{{route('atribut')}}" class="menu-link {{ Omjin::set_active(['atributRead']) }}">
                 <span class="menu-bullet">
                     <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">Gejala</span>
+                <span class="menu-title">Atribut</span>
+            </a>
+        </div>
+        {{-- @endif  --}}
+
+        {{-- @if(Omjin::permission(['aclRead'])) --}}
+        <div class="menu-item">
+            <a href="{{route('kategori')}}" class="menu-link {{ Omjin::set_active(['kategoriRead']) }}">
+                <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Kategori Beasiswa</span>
+            </a>
+        </div>
+        {{-- @endif  --}}
+
+        {{-- @if(Omjin::permission(['aclRead'])) --}}
+        <div class="menu-item">
+            <a href="{{route('kriteria')}}" class="menu-link {{ Omjin::set_active(['kriteriaRead']) }}">
+                <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Kriteria</span>
             </a>
         </div>
         {{-- @endif  --}}
         {{-- @if(Omjin::permission(['aclRead'])) --}}
         <div class="menu-item">
-            <a href="{{route('penyakit')}}" class="menu-link {{ Omjin::set_active(['penyakit']) }}">
+            <a href="{{route('penilaian')}}" class="menu-link {{ Omjin::set_active(['penilaianRead']) }}">
                 <span class="menu-bullet">
                     <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">Penyakit</span>
+                <span class="menu-title">Penilaian</span>
             </a>
         </div>
         {{-- @endif  --}}
         {{-- @if(Omjin::permission(['aclRead'])) --}}
         <div class="menu-item">
-            <a href="{{route('rules')}}" class="menu-link {{ Omjin::set_active(['rules']) }}">
+            <a href="{{route('periode')}}" class="menu-link {{ Omjin::set_active(['aclRole']) }}">
                 <span class="menu-bullet">
                     <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">Rules</span>
+                <span class="menu-title">Periode</span>
+            </a>
+        </div>
+        {{-- @endif  --}}
+        {{-- @if(Omjin::permission(['aclRead'])) --}}
+        <div class="menu-item">
+            <a href="{{route('rules')}}" class="menu-link {{ Omjin::set_active(['aclRole']) }}">
+                <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Rules Penilaian</span>
             </a>
         </div>
         {{-- @endif  --}}
@@ -71,6 +87,7 @@
             </a>
         </div>
         {{-- @endif  --}}
+
     </div>
 </div>
 {{-- @endif --}}
